@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-left: 5px;
+        }
+        button.remove {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>To-Do List</h1>
+    <input type="text" id="taskInput" placeholder="Adicione uma nova tarefa...">
+    <button onclick="addTask()">Adicionar</button>
+    <ul id="taskList"></ul>
+
+    <script>
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            const taskText = taskInput.value.trim();
+            if (taskText === "") {
+                alert("Por favor, insira uma tarefa.");
+                return;
+            }
+            const taskList = document.getElementById('taskList');
+            const li = createTaskElement(taskText);
+            taskList.appendChild(li);
+            taskInput.value = "";
+        }
+
+        function createTaskElement(taskText) {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <span>${taskText}</span>
+                <div>
+                    <button onclick="completeTask(this)">Concluir</button>
+                    <button onclick="editTask(this)">Editar</button>
+                    <button class="remove" onclick="removeTask(this)">Remover</button>
+                </div>
+            `;
+            return li;
+        }
+
+        function removeTask(button) {
+            const li = button.parentElement.parentElement;
+            li.remove();
+        }
+
+        function completeTask(button) {
+            const li = button.parentElement.parentElement;
+            li.querySelector('span').classList.toggle('completed');
+        }
+
+        function editTask(button) {
+            const li = button.parentElement.parentElement;
+            const span = li.querySelector('span');
+            const currentText = span.innerText;
+
+            const newText = prompt("Edite sua tarefa:", currentText);
+            if (newText !== null && newText.trim() !== "") {
+                span.innerText = newText.trim();
+            }
+        }
+    </script>
+</body>
+</html>
